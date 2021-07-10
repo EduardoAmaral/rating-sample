@@ -9,7 +9,10 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/test-setup.ts"
+    ]
   },
   "author": "eduardoamaral",
   "license": "ISC",
@@ -21,6 +24,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.0",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.2",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   },
