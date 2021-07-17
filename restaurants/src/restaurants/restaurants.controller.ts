@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import RestaurantDto from './restaurant.dto';
 import { Restaurant } from './restaurant.model';
 import { RestaurantsService } from './restaurants.service';
@@ -10,6 +10,11 @@ export class RestaurantsController {
   @Get()
   getAll(): Restaurant[] {
     return this.restaurantsService.getAll();
+  }
+
+  @Get('/:id')
+  getById(@Param('id') id: string): Restaurant {
+    return this.restaurantsService.getById(id);
   }
 
   @Post()

@@ -14,6 +14,10 @@ export class RestaurantsService {
     return this.restaurants;
   }
 
+  getById(id: string): Restaurant {
+    return this.restaurants.find((restaurant) => restaurant.id == id);
+  }
+
   create(dto: RestaurantDto): Restaurant {
     const restaurant: Restaurant = {
       id: uuid(),
