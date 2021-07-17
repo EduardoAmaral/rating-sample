@@ -29,4 +29,10 @@ export class RestaurantsService {
 
     return restaurant;
   }
+
+  deleteById(id: string): void {
+    this.restaurants = this.restaurants.filter(
+      (restaurant) => restaurant.id != id,
+    );
+  }
 }
