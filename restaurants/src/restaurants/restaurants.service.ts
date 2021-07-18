@@ -69,15 +69,10 @@ export class RestaurantsService {
   }
 
   updateStatus(id: string, status: RestaurantStatus): Restaurant {
-    let updatedRestaurant;
-    this.restaurants = this.restaurants.map((restaurant) => {
-      if (restaurant.id == id) {
-        restaurant.status = status;
-        updatedRestaurant = restaurant;
-      }
-      return restaurant;
-    });
+    const restaurant = this.getById(id);
 
-    return updatedRestaurant;
+    restaurant.status = status;
+
+    return restaurant;
   }
 }
