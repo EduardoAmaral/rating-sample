@@ -6,6 +6,6 @@ export interface Restaurant {
 }
 
 export enum RestaurantStatus {
-  OPEN,
-  CLOSED,
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
 }

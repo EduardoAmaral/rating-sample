@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
-import RestaurantDto from './restaurant.dto';
+import RestaurantCreateDto from './restaurant-create.dto';
+import { RestaurantQueryDto } from './restaurant-query.dto';
 import { Restaurant, RestaurantStatus } from './restaurant.model';
 import { RestaurantsService } from './restaurants.service';
 
@@ -16,8 +18,8 @@ export class RestaurantsController {
   constructor(private restaurantsService: RestaurantsService) {}
 
   @Get()
-  getAll(): Restaurant[] {
-    return this.restaurantsService.getAll();
+  getAll(@Query() queryDto: RestaurantQueryDto): Restaurant[] {
+    return this.restaurantsService.getAllBy(queryDto);
   }
 
   @Get('/:id')
@@ -26,7 +28,7 @@ export class RestaurantsController {
   }
 
   @Post()
-  create(@Body() dto: RestaurantDto): Restaurant {
+  create(@Body() dto: RestaurantCreateDto): Restaurant {
     return this.restaurantsService.create(dto);
   }
 
