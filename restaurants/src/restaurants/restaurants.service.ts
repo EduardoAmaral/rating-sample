@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Restaurant, RestaurantStatus } from './restaurant.model';
 import { v4 as uuid } from 'uuid';
 import RestaurantCreateDto from './restaurant-create.dto';
@@ -38,7 +38,15 @@ export class RestaurantsService {
   }
 
   getById(id: string): Restaurant {
-    return this.restaurants.find((restaurant) => restaurant.id == id);
+    const restaurant = this.restaurants.find(
+      (restaurant) => restaurant.id == id,
+    );
+
+    if (!restaurant) {
+      throw new NotFoundException(`Restaurant ${id} not found`);
+    }
+
+    return restaurant;
   }
 
   create(dto: RestaurantCreateDto): Restaurant {
