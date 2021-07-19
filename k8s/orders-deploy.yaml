@@ -18,3 +18,16 @@ spec:
           env:
             - name: DB_URI
               value: 'mongodb://orders-db-service:27017/ordersdb'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-service
+spec:
+  selector:
+    app: orders
+  ports:
+    - name: orders
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
