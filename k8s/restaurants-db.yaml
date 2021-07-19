@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restaurants-db-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restaurants-db
+  template:
+    metadata:
+      labels:
+        app: restaurants-db
+    spec:
+      containers:
+        - name: restaurants-db
+          image: postgres
+          env:
+            - name: POSTGRES_DB
+              value: 'restaurants-db'
+            - name: POSTGRES_PASSWORD
+              value: 'some_password'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: restaurants-db-service
+spec:
+  selector:
+    app: restaurants-db
+  ports:
+    - name: restaurants-db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

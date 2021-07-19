@@ -17,3 +17,10 @@ spec:
                 name: orders-service
                 port:
                   number: 3000
+          - path: /api/restaurants/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: restaurants-service
+                port:
+                  number: 3000
