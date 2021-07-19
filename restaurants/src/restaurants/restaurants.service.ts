@@ -1,12 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Restaurant, RestaurantStatus } from './restaurant.model';
+import { RestaurantModel, RestaurantStatus } from './restaurant.model';
 import { v4 as uuid } from 'uuid';
 import RestaurantCreateDto from './restaurant-create.dto';
 import { RestaurantQueryDto } from './restaurant-query.dto';
+import { RestaurantRepository } from './restaurant.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Restaurant } from './restautant.entity';
 
 @Injectable()
 export class RestaurantsService {
-  private restaurants: Restaurant[] = [
+  constructor(
+    @InjectRepository(RestaurantRepository)
+    private respository: RestaurantRepository,
+  ) {}
+
+  private restaurants: RestaurantModel[] = [
     {
       id: uuid(),
       name: 'Burger King',
@@ -21,7 +29,7 @@ export class RestaurantsService {
     },
   ];
 
-  getAllBy(query: RestaurantQueryDto): Restaurant[] {
+  getAllBy(query: RestaurantQueryDto): RestaurantModel[] {
     let result = this.restaurants;
     if (query.search) {
       result = result.filter((restaurant) =>
@@ -37,7 +45,7 @@ export class RestaurantsService {
     return result;
   }
 
-  getById(id: string): Restaurant {
+  getById(id: string): RestaurantModel {
     const restaurant = this.restaurants.find(
       (restaurant) => restaurant.id == id,
     );
@@ -49,17 +57,8 @@ export class RestaurantsService {
     return restaurant;
   }
 
-  create(dto: RestaurantCreateDto): Restaurant {
-    const restaurant: Restaurant = {
-      id: uuid(),
-      name: dto.name,
-      description: dto.description,
-      status: RestaurantStatus.CLOSED,
-    };
-
-    this.restaurants.push(restaurant);
-
-    return restaurant;
+  create(command: RestaurantCreateDto): Promise<Restaurant> {
+    return this.respository.createRestaurant(command);
   }
 
   deleteById(id: string): void {
@@ -68,7 +67,7 @@ export class RestaurantsService {
     );
   }
 
-  updateStatus(id: string, status: RestaurantStatus): Restaurant {
+  updateStatus(id: string, status: RestaurantStatus): RestaurantModel {
     const restaurant = this.getById(id);
 
     restaurant.status = status;

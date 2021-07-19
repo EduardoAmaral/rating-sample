@@ -10,25 +10,26 @@ import {
 } from '@nestjs/common';
 import RestaurantCreateDto from './restaurant-create.dto';
 import { RestaurantQueryDto } from './restaurant-query.dto';
-import { Restaurant, RestaurantStatus } from './restaurant.model';
+import { RestaurantModel, RestaurantStatus } from './restaurant.model';
 import { RestaurantsService } from './restaurants.service';
+import { Restaurant } from './restautant.entity';
 
 @Controller('restaurants')
 export class RestaurantsController {
   constructor(private restaurantsService: RestaurantsService) {}
 
   @Get()
-  getAll(@Query() queryDto: RestaurantQueryDto): Restaurant[] {
+  getAll(@Query() queryDto: RestaurantQueryDto): RestaurantModel[] {
     return this.restaurantsService.getAllBy(queryDto);
   }
 
   @Get('/:id')
-  getById(@Param('id') id: string): Restaurant {
+  getById(@Param('id') id: string): RestaurantModel {
     return this.restaurantsService.getById(id);
   }
 
   @Post()
-  create(@Body() dto: RestaurantCreateDto): Restaurant {
+  create(@Body() dto: RestaurantCreateDto): Promise<Restaurant> {
     return this.restaurantsService.create(dto);
   }
 
@@ -41,7 +42,7 @@ export class RestaurantsController {
   updateStatus(
     @Param('id') id: string,
     @Body('status') status: RestaurantStatus,
-  ): Restaurant {
+  ): RestaurantModel {
     return this.restaurantsService.updateStatus(id, status);
   }
 }
