@@ -45,7 +45,17 @@ export class RestaurantsService {
     return result;
   }
 
-  getById(id: string): RestaurantModel {
+  async getById(id: string): Promise<Restaurant> {
+    const restaurant = await this.respository.findOne(id);
+
+    if (!restaurant) {
+      throw new NotFoundException(`Restaurant ${id} not found`);
+    }
+
+    return restaurant;
+  }
+
+  private getByIdForUpdate(id: string): RestaurantModel {
     const restaurant = this.restaurants.find(
       (restaurant) => restaurant.id == id,
     );
@@ -68,7 +78,7 @@ export class RestaurantsService {
   }
 
   updateStatus(id: string, status: RestaurantStatus): RestaurantModel {
-    const restaurant = this.getById(id);
+    const restaurant = this.getByIdForUpdate(id);
 
     restaurant.status = status;
 

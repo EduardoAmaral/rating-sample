@@ -24,7 +24,7 @@ export class RestaurantsController {
   }
 
   @Get('/:id')
-  getById(@Param('id') id: string): RestaurantModel {
+  getById(@Param('id') id: string): Promise<Restaurant> {
     return this.restaurantsService.getById(id);
   }
 
