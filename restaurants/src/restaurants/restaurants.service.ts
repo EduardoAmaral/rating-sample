@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { RestaurantModel, RestaurantStatus } from './restaurant.model';
-import { v4 as uuid } from 'uuid';
+import { RestaurantStatus } from './restaurant.status';
 import RestaurantCreateDto from './restaurant-create.dto';
 import { RestaurantQueryDto } from './restaurant-query.dto';
 import { RestaurantRepository } from './restaurant.repository';
@@ -14,35 +13,8 @@ export class RestaurantsService {
     private respository: RestaurantRepository,
   ) {}
 
-  private restaurants: RestaurantModel[] = [
-    {
-      id: uuid(),
-      name: 'Burger King',
-      description: 'BK',
-      status: RestaurantStatus.OPEN,
-    },
-    {
-      id: uuid(),
-      name: 'McDonalds',
-      description: 'Mac',
-      status: RestaurantStatus.OPEN,
-    },
-  ];
-
-  getAllBy(query: RestaurantQueryDto): RestaurantModel[] {
-    let result = this.restaurants;
-    if (query.search) {
-      result = result.filter((restaurant) =>
-        restaurant.name.toLowerCase().includes(query.search.toLowerCase()),
-      );
-    }
-
-    if (query.status) {
-      result = result.filter(
-        (restaurant) => restaurant.status === query.status,
-      );
-    }
-    return result;
+  searchBy(query: RestaurantQueryDto): Promise<Restaurant[]> {
+    return this.respository.search(query);
   }
 
   async getById(id: string): Promise<Restaurant> {

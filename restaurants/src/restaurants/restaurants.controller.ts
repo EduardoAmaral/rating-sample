@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import RestaurantCreateDto from './restaurant-create.dto';
 import { RestaurantQueryDto } from './restaurant-query.dto';
-import { RestaurantModel, RestaurantStatus } from './restaurant.model';
+import { RestaurantStatus } from './restaurant.status';
 import { RestaurantsService } from './restaurants.service';
 import { Restaurant } from './restautant.entity';
 
@@ -19,8 +19,8 @@ export class RestaurantsController {
   constructor(private restaurantsService: RestaurantsService) {}
 
   @Get()
-  getAll(@Query() queryDto: RestaurantQueryDto): RestaurantModel[] {
-    return this.restaurantsService.getAllBy(queryDto);
+  getAll(@Query() queryDto: RestaurantQueryDto): Promise<Restaurant[]> {
+    return this.restaurantsService.searchBy(queryDto);
   }
 
   @Get('/:id')

@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RestaurantStatus } from './restaurant.model';
+import { RestaurantStatus } from './restaurant.status';
 
 @Entity()
 export class Restaurant {
