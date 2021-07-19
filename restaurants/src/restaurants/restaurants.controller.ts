@@ -14,7 +14,7 @@ import { RestaurantModel, RestaurantStatus } from './restaurant.model';
 import { RestaurantsService } from './restaurants.service';
 import { Restaurant } from './restautant.entity';
 
-@Controller('restaurants')
+@Controller('api/restaurants')
 export class RestaurantsController {
   constructor(private restaurantsService: RestaurantsService) {}
 
