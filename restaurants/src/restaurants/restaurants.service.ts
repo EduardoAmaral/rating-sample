@@ -59,10 +59,12 @@ export class RestaurantsService {
     return this.respository.createRestaurant(command);
   }
 
-  deleteById(id: string): void {
-    this.restaurants = this.restaurants.filter(
-      (restaurant) => restaurant.id != id,
-    );
+  async deleteById(id: string): Promise<void> {
+    const result = await this.respository.softDelete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Restaurant ${id} not found`);
+    }
   }
 
   async updateStatus(

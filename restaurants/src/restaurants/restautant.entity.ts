@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { RestaurantStatus } from './restaurant.model';
 
 @Entity()
@@ -14,4 +21,13 @@ export class Restaurant {
 
   @Column()
   status: RestaurantStatus;
+
+  @CreateDateColumn()
+  created!: Date;
+
+  @UpdateDateColumn()
+  updated!: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }
