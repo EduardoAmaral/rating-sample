@@ -42,7 +42,7 @@ export class RestaurantsController {
   updateStatus(
     @Param('id') id: string,
     @Body('status') status: RestaurantStatus,
-  ): RestaurantModel {
+  ): Promise<Restaurant> {
     return this.restaurantsService.updateStatus(id, status);
   }
 }

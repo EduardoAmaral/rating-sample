@@ -55,18 +55,6 @@ export class RestaurantsService {
     return restaurant;
   }
 
-  private getByIdForUpdate(id: string): RestaurantModel {
-    const restaurant = this.restaurants.find(
-      (restaurant) => restaurant.id == id,
-    );
-
-    if (!restaurant) {
-      throw new NotFoundException(`Restaurant ${id} not found`);
-    }
-
-    return restaurant;
-  }
-
   create(command: RestaurantCreateDto): Promise<Restaurant> {
     return this.respository.createRestaurant(command);
   }
@@ -77,10 +65,15 @@ export class RestaurantsService {
     );
   }
 
-  updateStatus(id: string, status: RestaurantStatus): RestaurantModel {
-    const restaurant = this.getByIdForUpdate(id);
+  async updateStatus(
+    id: string,
+    status: RestaurantStatus,
+  ): Promise<Restaurant> {
+    const restaurant = await this.getById(id);
 
     restaurant.status = status;
+
+    this.respository.save(restaurant);
 
     return restaurant;
   }
