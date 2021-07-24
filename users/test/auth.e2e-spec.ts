@@ -16,7 +16,6 @@ describe('AuthController - e2e', () => {
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          logging: true,
           synchronize: true,
           autoLoadEntities: true,
         }),
@@ -29,10 +28,10 @@ describe('AuthController - e2e', () => {
     userRepository = moduleRef.get<UserRepository>(UserRepository);
   });
 
-  it('sign-up', async () => {
+  it('/api/users/signup (POST)', async () => {
     const email = 'email@provider.com';
     const response = await request(app.getHttpServer())
-      .post('/api/auth/signup')
+      .post('/api/users/signup')
       .send({
         email,
         password: '12345678',
