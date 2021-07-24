@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { RestaurantStatus } from './restaurant.status';
-import RestaurantCreateDto from './restaurant-create.dto';
-import { RestaurantQueryDto } from './restaurant-query.dto';
+import RestaurantCreateDto from './dto/restaurant-create.dto';
 import { RestaurantRepository } from './restaurant.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Restaurant } from './restautant.entity';
+import { Restaurant } from './model/restautant.entity';
+import { RestaurantQueryDto } from './dto/restaurant-query.dto';
 
 @Injectable()
 export class RestaurantsService {

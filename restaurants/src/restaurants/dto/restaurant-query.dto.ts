@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { RestaurantStatus } from './restaurant.status';
+import { RestaurantStatus } from '../restaurant.status';
 
 export class RestaurantQueryDto {
   @IsOptional()

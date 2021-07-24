@@ -1,8 +1,8 @@
 import { EntityRepository, Repository } from 'typeorm';
-import RestaurantCreateDto from './restaurant-create.dto';
-import { RestaurantQueryDto } from './restaurant-query.dto';
+import RestaurantCreateDto from './dto/restaurant-create.dto';
 import { RestaurantStatus } from './restaurant.status';
-import { Restaurant } from './restautant.entity';
+import { Restaurant } from './model/restautant.entity';
+import { RestaurantQueryDto } from './dto/restaurant-query.dto';
 
 @EntityRepository(Restaurant)
 export class RestaurantRepository extends Repository<Restaurant> {
