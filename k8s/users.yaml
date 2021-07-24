@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users
+          image: eduardofsamaral/restaurant-users
+          env:
+            - name: DB_HOST
+              value: 'users-db-service'
+            - name: DB_PORT
+              value: '5432'
+            - name: DB_NAME
+              value: 'users-db'
+            - name: DB_USERNAME
+              value: 'postgres'
+            - name: DB_PASSWORD
+              value: 'some_password'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service
+spec:
+  selector:
+    app: users
+  ports:
+    - name: users
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

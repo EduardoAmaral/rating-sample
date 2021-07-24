@@ -22,6 +22,14 @@ build:
       manual:
         - src: 'src/**/*.ts'
           dest: .
+  - image: eduardofsamaral/restaurant-users
+    context: users
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: 'src/**/*.ts'
+          dest: .
 deploy:
   kubectl:
     manifests:
