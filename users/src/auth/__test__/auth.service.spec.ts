@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 
 const mockAuthRepository = () => ({
   createUser: jest.fn(),
+  findOne: jest.fn(),
 });
 
 const mockJwtService = () => ({
@@ -43,6 +44,49 @@ describe('AuthService', () => {
       const arg = spy.mock.calls[0][0];
       expect(arg.email).toBe('a@a.com');
       expect(await bcrypt.compare('password', arg.password)).toBeTruthy();
+    });
+  });
+
+  describe('sign-in', () => {
+    it('should return a token if credentials matches user', async () => {
+      const email = 'a@a.com';
+      const password = 'password';
+      const salt = await bcrypt.genSalt();
+      const hash = await bcrypt.hash(password, salt);
+      jest.spyOn(repository, 'findOne').mockResolvedValueOnce({
+        id: 'id',
+        email,
+        password: hash,
+      });
+
+      const token = await service.signIn({ email, password });
+
+      expect(token).toBeDefined();
+    });
+
+    it('should throw invalid credentials if user does not exist', async () => {
+      const email = 'a@a.com';
+      const password = 'password';
+
+      await expect(() => service.signIn({ email, password })).rejects.toThrow(
+        'Invalid credentials',
+      );
+    });
+
+    it('should throw invalid credentials if password does not match', async () => {
+      const email = 'a@a.com';
+      const password = 'password';
+      const salt = await bcrypt.genSalt();
+      const hash = await bcrypt.hash('another weird password', salt);
+      jest.spyOn(repository, 'findOne').mockResolvedValueOnce({
+        id: 'id',
+        email,
+        password: hash,
+      });
+
+      await expect(() => service.signIn({ email, password })).rejects.toThrow(
+        'Invalid credentials',
+      );
     });
   });
 });

@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 
 const mockAuthService = () => ({
   signUp: jest.fn(),
+  signIn: jest.fn(),
 });
 
 describe('AuthController', () => {
@@ -22,10 +23,20 @@ describe('AuthController', () => {
 
   describe('sign-up', () => {
     it('should interact with service', () => {
-      controller.signUp({ email: 'a@a.com', password: 'b' });
+      controller.signUp({ email: 'a@a.com', password: '12345678' });
       expect(service.signUp).toBeCalledWith({
         email: 'a@a.com',
-        password: 'b',
+        password: '12345678',
+      });
+    });
+  });
+
+  describe('sign-in', () => {
+    it('should interact with service signIn method', () => {
+      controller.signIn({ email: 'a@a.com', password: '12345678' });
+      expect(service.signIn).toBeCalledWith({
+        email: 'a@a.com',
+        password: '12345678',
       });
     });
   });

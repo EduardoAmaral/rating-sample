@@ -2,6 +2,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
+import * as bcrypt from 'bcrypt';
+
 import { AuthModule } from '../src/auth/auth.module';
 import { UserRepository } from '../src/auth/user.repository';
 
@@ -88,6 +90,27 @@ describe('AuthController - e2e', () => {
       'password must be shorter than or equal to 32 characters',
     );
     expect(userRepository.findOne({ email })).toMatchObject({});
+  });
+
+  it('/api/users/signin (POST)', async () => {
+    const email = 'email@provider.com';
+    const password = 'anything';
+
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(password, salt);
+
+    const user = userRepository.create({ email, password: hash });
+    await userRepository.save(user);
+
+    const response = await request(app.getHttpServer())
+      .post('/api/users/signin')
+      .send({
+        email,
+        password,
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body.token).toBeDefined();
   });
 
   afterEach(async () => {
