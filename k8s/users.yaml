@@ -26,6 +26,8 @@ spec:
               value: 'postgres'
             - name: DB_PASSWORD
               value: 'some_password'
+            - name: JWT_SECRET
+              value: 'secret'
 ---
 apiVersion: v1
 kind: Service

@@ -1,8 +1,8 @@
-import * as request from 'supertest';
-import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { AuthModule } from '../src/auth/auth.module';
+import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as request from 'supertest';
+import { AuthModule } from '../src/auth/auth.module';
 import { UserRepository } from '../src/auth/user.repository';
 
 describe('AuthController - e2e', () => {
@@ -10,6 +10,8 @@ describe('AuthController - e2e', () => {
   let userRepository: UserRepository;
 
   beforeAll(async () => {
+    process.env = { ...process.env, JWT_SECRET: 'fake-secret' };
+
     const moduleRef = await Test.createTestingModule({
       imports: [
         AuthModule,

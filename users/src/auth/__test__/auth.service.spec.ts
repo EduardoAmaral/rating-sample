@@ -2,9 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '../user.repository';
 import { AuthService } from '../auth.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 const mockAuthRepository = () => ({
   createUser: jest.fn(),
+});
+
+const mockJwtService = () => ({
+  sign: jest.fn(),
 });
 
 describe('AuthService', () => {
@@ -16,6 +21,7 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         { provide: UserRepository, useFactory: mockAuthRepository },
+        { provide: JwtService, useFactory: mockJwtService },
       ],
     }).compile();
 
@@ -25,7 +31,11 @@ describe('AuthService', () => {
 
   describe('sign-up', () => {
     it('should call repository with encrypted password', async () => {
-      const spy = jest.spyOn(repository, 'createUser');
+      const spy = jest.spyOn(repository, 'createUser').mockResolvedValueOnce({
+        id: 'id',
+        email: 'a@a.com',
+        password: 'password',
+      });
       await service.signUp({ email: 'a@a.com', password: 'password' });
 
       expect(spy).toBeCalled();
